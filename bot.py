@@ -1,6 +1,7 @@
 import os
 import logging
 import requests
+import asyncio
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ContextTypes
 
@@ -313,7 +314,8 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     logger.info("✅ البوت يعمل...")
-    app.run_polling(drop_pending_updates=True)
+    asyncio.run(app.run_polling(drop_pending_updates=True))
+
 
 if __name__ == "__main__":
     main()
