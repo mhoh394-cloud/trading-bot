@@ -37,12 +37,13 @@ def get_price(symbol: str):
             "APCA-API-KEY-ID": ALPACA_KEY,
             "APCA-API-SECRET-KEY": ALPACA_SECRET
         }
-        url = f"{ALPACA_BASE}/stocks/{symbol}/trades/latest"
-        res = requests.get(url, headers=headers, timeout=8)
-        if res.status_code == 200:
-            data = res.json()
-            price = data["trade"]["p"]
-            return float(price)
+        url = f"{ALPACA_BASE}/stocks/{symbol}/bars/latest"
+res = requests.get(url, headers=headers, timeout=8)
+if res.status_code == 200:
+    data = res.json()
+    price = data["bar"]["c"]
+    return float(price)
+
     except Exception as e:
         logger.error(f"Price error: {e}")
     return None
@@ -55,7 +56,8 @@ def get_bars(symbol: str, timeframe="1Day", limit=20):
             "APCA-API-SECRET-KEY": ALPACA_SECRET
         }
         url = f"{ALPACA_BASE}/stocks/{symbol}/bars"
-        params = {"timeframe": timeframe, "limit": limit, "feed": "iex"}
+        params = {"timeframe": timeframe, "limit": limit}
+
         res = requests.get(url, headers=headers, params=params, timeout=8)
         if res.status_code == 200:
             bars = res.json().get("bars", [])
